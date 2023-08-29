@@ -4,25 +4,28 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    max_sum = 0
-    cur_node = None
-
     def pairSum(self, head: Optional[ListNode]) -> int:
-        self.cur_node = head
-        def get_twin(node:ListNode) -> bool:
-            if not node:
-                return True
-            check_pair_sum = get_twin(node.next)
-            if check_pair_sum:
-                self.max_sum = max(self.max_sum, self.cur_node.val + node.val)
-                # 불필요한 재갱신 방지
-                if self.cur_node.next == node:
-                    check_pair_sum = False
-                    return False
-                else:
-                    self.cur_node = self.cur_node.next
-                    return True
-        get_twin(head)
-        return self.max_sum
+        """
+        가능하다면 recursive를 통한 콜스택 호출을 삼갈 것
+        """
+        slow, fast = head, head
+        
+        while fast and fast.next:
+            fast = fast.next.next
+            slow = slow.next # after then slow is middle
+        
+        cur, prev = slow, None
+        while cur:
+            cur.next, prev, cur = prev, cur, cur.next # after then prev is last node
+        
+        former, latter = head, prev
+        max_sum = 0
+        while latter: # or former
+            max_sum = max(max_sum, former.val + latter.val)
+            former, latter = former.next, latter.next
+
+        return max_sum
+
+        
             
                 
