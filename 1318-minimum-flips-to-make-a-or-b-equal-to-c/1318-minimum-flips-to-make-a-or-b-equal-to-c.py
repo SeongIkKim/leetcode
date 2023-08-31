@@ -1,17 +1,15 @@
 class Solution:
     def minFlips(self, a: int, b: int, c: int) -> int:
-        if b>a:
-            a, b = b, a
-        
         count = 0
-        while a>0 or c>0:
-            a_, b_, c_ = a%2, b%2, c%2
-            if c_ == 0:
-                count += a_
-                count += b_
+        while a or b or c:
+            if c & 1: # rightmost bit of c
+                count += 0 if ((a&1) or (b&1)) else 1
             else:
-                if not a_ and not b_:
-                    count += 1
-            a, b, c = a//2, b//2, c//2
+                count += (a&1) + (b&1)
+
+            # bitshifting always keeps >=0 
+            a >>= 1
+            b >>= 1
+            c >>= 1
 
         return count
