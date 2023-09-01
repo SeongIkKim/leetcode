@@ -23,6 +23,6 @@ class Solution {
                 left = mid+1;
             }
         }
-        return right; // or left or anything
+        return right; // or left
     }
 }
